@@ -1,0 +1,7 @@
+/.idea/*
+/out
+
+!/.idea/runConfigurations
+!/.idea/artifacts
+!/.idea/modules.xml
+!/.idea/misc.xml
