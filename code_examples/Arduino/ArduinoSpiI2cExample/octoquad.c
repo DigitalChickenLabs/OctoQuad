@@ -226,7 +226,7 @@ bool octoquad_read_single_count(uint8_t encoder, int32_t* out)
         return false;
     }
 
-    const uint8_t target_reg = OCTOQUAD_REG_ENC0 + encoder;
+    const uint8_t target_reg = OCTOQUAD_REG_ENC0 + encoder * sizeof(int32_t);
 
     return read_registers(target_reg, sizeof(int32_t), (uint8_t*) out);
 }
@@ -238,7 +238,7 @@ bool octoquad_read_single_velocity(uint8_t encoder, int16_t* out)
         return false;
     }
 
-    const uint8_t target_reg = OCTOQUAD_REG_VEL0 + encoder;
+    const uint8_t target_reg = OCTOQUAD_REG_VEL0 + encoder * sizeof(int16_t);
 
     return read_registers(target_reg, sizeof(int16_t), (uint8_t*) out);
 }
@@ -318,7 +318,7 @@ bool octoquad_get_single_velocity_measurement_intvl(uint8_t encoder, uint8_t* ou
 
     uint8_t target_reg = OCTOQUAD_REG_VEL_INTVL_0 + encoder;
 
-    return read_register(encoder, out);
+    return read_register(target_reg, out);
 }
 
 bool octoquad_get_all_velocity_measurement_intvls(uint8_t out[NUM_ENCODERS])

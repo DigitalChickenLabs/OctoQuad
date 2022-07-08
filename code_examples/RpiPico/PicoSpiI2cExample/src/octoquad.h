@@ -33,7 +33,7 @@
 #define OCTOQUAD_CHIP_ID 0x51
 #define OCTOQUAD_I2C_ADDR 0x30
 
-#define OCTOQUAD_DRIVER_SUPPORTED_FW_VERSION_MAJ 0
+#define OCTOQUAD_DRIVER_SUPPORTED_FW_VERSION_MAJ 1
 
 // ---------------------------------------------------------------------------------
 //                                API STRUCTS
