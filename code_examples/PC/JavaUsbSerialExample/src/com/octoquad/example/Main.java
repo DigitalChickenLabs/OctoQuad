@@ -47,6 +47,11 @@ public class Main
     public static void runWithOpenPort(SerialPort port) throws InterruptedException
     {
         port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 0, 0);
+
+        // This isn't needed for USB serial mode, but, we want to be compatible with a USB to UART
+        // adapter cable being used with the OctoQuad in serial mode, too.
+        port.setComPortParameters(115200, 8, 1, 0);
+
         byte[] readBuf = new byte[1];
         byte[] lineBuf = new byte[256];
         int lineBufIdx = 0;
