@@ -123,7 +123,7 @@ static bool spi_write_registers(const uint8_t reg, const uint8_t* const src, uin
 
     // Send it off
     spi_select_chip();
-    platformImpl.spi_write_blocking(src, n);
+    platformImpl.spi_write_blocking(txBuf, n+2);
     spi_deselect_chip();
 
     // We don't really have a way to know if the write failed, unfortunately
