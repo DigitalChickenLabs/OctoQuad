@@ -33,7 +33,7 @@
 #define OCTOQUAD_CHIP_ID 0x51
 #define OCTOQUAD_I2C_ADDR 0x30
 
-#define OCTOQUAD_DRIVER_SUPPORTED_FW_VERSION_MAJ 1
+#define OCTOQUAD_DRIVER_SUPPORTED_FW_VERSION_MAJ 2
 
 // ---------------------------------------------------------------------------------
 //                                API STRUCTS
@@ -65,6 +65,11 @@ typedef struct __attribute__((packed))
     uint8_t eng;
 } OctoQuadFwVersion;
 
+typedef struct __attribute__((packed))
+{
+    uint16_t min;
+    uint16_t max;
+} OctoQuadChannelPulseWidthParams;
 
 // ---------------------------------------------------------------------------------
 //                                API ENUMS
@@ -72,10 +77,17 @@ typedef struct __attribute__((packed))
 
 typedef enum
 {
-    OCTOQUAD_I2C_RESET_MODE_NONE = 0,
-    OCTOQUAD_I2C_RESET_MODE_1_PERIPH_RST_ON_FRAME_ERR = 1,
-    OCTOQUAD_I2C_RESET_MODE_2_M1_PLUS_SCL_IDLE_ONESHOT_TGL = 2
-} OctoQuadI2cResetMode;
+    OCTOQUAD_I2C_RECOVERY_MODE_NONE = 0,
+    OCTOQUAD_I2C_RECOVERY_MODE_1_PERIPH_RST_ON_FRAME_ERR = 1,
+    OCTOQUAD_I2C_RECOVERY_MODE_2_M1_PLUS_SCL_IDLE_ONESHOT_TGL = 2
+} OctoQuadI2cRecoveryMode;
+
+typedef enum
+{
+    OCTOQUAD_CHANNEL_BANK_MODE_ALL_QUADRATURE = 0,
+    OCTOQUAD_CHANNEL_BANK_MODE_ALL_PULSE_IN = 1,
+    OCTOQUAD_CHANNEL_BANK_MODE_BANK1QUAD_BANK2PULSE = 2
+} OctoQuadChannelBankMode;
 
 typedef enum
 {
@@ -95,6 +107,7 @@ typedef struct
     bool (*spi_write_read_blocking) (const uint8_t* const src, uint8_t* const rx, uint8_t n);
     void (*spi_cs_assert) (bool assert);
     void (*sleep_us) (const uint16_t us);
+    void (*sleep_ms) (const uint16_t ms);
 } OctoQuadPlatformImpl;
 
 // ---------------------------------------------------------------------------------
@@ -104,18 +117,38 @@ typedef struct
 bool octoquad_init(OctoQuadInterface inft, OctoQuadPlatformImpl platform);
 bool octoquad_read_chip_id(uint8_t* const out);
 bool octoquad_read_fw_version(OctoQuadFwVersion * dst);
-bool octoquad_read_single_count(uint8_t encoder, int32_t* out);
+
+bool octoquad_read_single_position(uint8_t encoder, int32_t* out);
 bool octoquad_read_single_velocity(uint8_t encoder, int16_t* out);
-bool octoquad_read_all_counts(int32_t out[NUM_ENCODERS]);
+
+bool octoquad_read_all_positions(int32_t out[NUM_ENCODERS]);
 bool octoquad_read_all_velocities(int16_t out[NUM_ENCODERS]);
+
 bool octoquad_read_all_encoder_data_struct(OctoQuadEncoderData * out);
 bool octoquad_read_all_encoder_data(int32_t countsOut[NUM_ENCODERS], int16_t velsOut[NUM_ENCODERS]);
-bool octoquad_reset_single_encoder(uint8_t encoder);
-bool octoquad_reset_all_encoders();
-bool octoquad_set_single_velocity_measurement_intvl(uint8_t encoder, uint8_t intvl);
-bool octoquad_get_single_velocity_measurement_intvl(uint8_t encoder, uint8_t* out);
-bool octoquad_get_all_velocity_measurement_intvls(uint8_t out[NUM_ENCODERS]);
-bool octoquad_set_all_velocity_measurement_intvls(uint8_t intvl);
-bool octoquad_set_i2c_reset_mode(OctoQuadI2cResetMode mode);
+
+bool octoquad_reset_single_position(uint8_t chan);
+bool octoquad_reset_all_positions();
+
+bool octoquad_set_velocity_measurement_intvl(uint8_t chan, uint8_t intvl);
+bool octoquad_read_velocity_measurement_intvl(uint8_t chan, uint8_t* out);
+
+bool octoquad_set_i2c_recovery_mode(OctoQuadI2cRecoveryMode mode);
+bool octoquad_read_i2c_recovery_mode(OctoQuadI2cRecoveryMode* mode);
+
+bool octoquad_set_channel_bank_mode(OctoQuadChannelBankMode mode);
+bool octoquad_read_channel_bank_mode(OctoQuadChannelBankMode* out);
+
+bool octoquad_set_channel_pulse_width_params(uint8_t chan, OctoQuadChannelPulseWidthParams params);
+bool octoquad_read_channel_pulse_width_params(uint8_t chan, OctoQuadChannelPulseWidthParams* out);
+
+bool octoquad_set_all_channel_directions(const bool reverse[8]);
+bool octoquad_read_all_channel_directions(bool reverseOut[8]);
+
+bool octoquad_set_single_channel_direction(uint8_t chan, bool reverse);
+bool octoquad_read_single_channel_direction(uint8_t chan, bool* reverseOut);
+
+bool octoquad_write_params_to_flash();
+bool octoquad_reset_everything();
 
 #endif //OCTOQUADPICOLIB_OCTOQUAD_H
