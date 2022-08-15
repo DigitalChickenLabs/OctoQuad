@@ -77,6 +77,11 @@ static void platform_sleep_us(const uint16_t us)
     delayMicroseconds(us);
 }
 
+static void platform_sleep_ms(const uint16_t ms)
+{
+    delay(ms);
+}
+
 static void platform_spi_cs_assert(bool assert)
 {
     if(assert)
@@ -140,7 +145,8 @@ void setup()
             .spi_write_blocking = &platform_spi_write_blocking,
             .spi_write_read_blocking = &platform_spi_write_read_blocking,
             .spi_cs_assert = &platform_spi_cs_assert,
-            .sleep_us = &platform_sleep_us
+            .sleep_us = &platform_sleep_us,
+            .sleep_ms = &platform_sleep_ms
     };
 
     // Init the OctoQuad driver
@@ -191,6 +197,41 @@ void setup()
         goto error;
     }
 
+    OctoQuadChannelBankMode channelBankMode;
+    if(!octoquad_read_channel_bank_mode(&channelBankMode)) goto error;
+    sprintf(strBuf, "Channel Bank Mode = %d\r\n", channelBankMode);
+    Serial.print(strBuf);
+
+    OctoQuadI2cRecoveryMode recoveryMode;
+    if(!octoquad_read_i2c_recovery_mode(&recoveryMode)) goto error;
+    sprintf(strBuf, "I2C Recovery Mode = %d\r\n", recoveryMode);
+    Serial.print(strBuf);
+
+    for(int i = ENCODER_IDX_MIN; i <= ENCODER_IDX_MAX; i++)
+    {
+        uint8_t intvl;
+        if(!octoquad_read_velocity_measurement_intvl(i, &intvl)) goto error;
+        sprintf(strBuf, "Channel %d velocity sample interval = %d\r\n", i, intvl);
+        Serial.print(strBuf);
+    }
+
+    for(int i = ENCODER_IDX_MIN; i <= ENCODER_IDX_MAX; i++)
+    {
+        OctoQuadChannelPulseWidthParams params;
+        if(!octoquad_read_channel_pulse_width_params(i, &params)) goto error;
+        sprintf(strBuf, "Channel %d pulse min/max = %d/%d\r\n", i, params.min, params.max);
+        Serial.print(strBuf);
+    }
+
+    bool channelDirections[8];
+    octoquad_read_all_channel_directions(channelDirections);
+
+    for(int i = ENCODER_IDX_MIN; i <= ENCODER_IDX_MAX; i++)
+    {
+        sprintf(strBuf, "Channel %d reverse = %d\r\n", i, channelDirections[i]);
+        Serial.print(strBuf);
+    }
+
     for(int i = 5; i > 0; i--)
     {
         sprintf(strBuf, "\rBeginning reads in %d", i);
@@ -198,7 +239,7 @@ void setup()
         delay(1000);
     }
 
-    octoquad_reset_all_encoders();
+    octoquad_reset_all_positions();
 
     OctoQuadEncoderData data;
     memset((uint8_t*)&data, 0, sizeof(data));
