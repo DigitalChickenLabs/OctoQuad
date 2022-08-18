@@ -219,12 +219,12 @@ bool octoquad_init(OctoQuadInterface interface, OctoQuadPlatformImpl platform)
     return false;
 }
 
-bool octoquad_read_chip_id(uint8_t* const out)
+bool octoquad_get_chip_id(uint8_t* const out)
 {
     return read_register(OCTOQUAD_REG_CHIP_ID, out);
 }
 
-bool octoquad_read_fw_version(OctoQuadFwVersion * dst)
+bool octoquad_get_fw_version(OctoQuadFwVersion * dst)
 {
     return read_registers(OCTOQUAD_REG_FW_VERSION, sizeof(OctoQuadFwVersion), (uint8_t*) dst);
 }
@@ -323,7 +323,7 @@ bool octoquad_set_velocity_measurement_intvl(uint8_t encoder, uint8_t intvl)
     return write_registers(OCTOQUAD_REG_COMMAND, outgoing, sizeof(outgoing));
 }
 
-bool octoquad_read_velocity_measurement_intvl(uint8_t encoder, uint8_t* out)
+bool octoquad_get_velocity_measurement_intvl(uint8_t encoder, uint8_t* out)
 {
     if(!ENCODER_IDX_IN_RANGE(encoder))
     {
@@ -350,7 +350,7 @@ bool octoquad_set_i2c_recovery_mode(OctoQuadI2cRecoveryMode mode)
     return write_registers(OCTOQUAD_REG_COMMAND, outgoing, sizeof(outgoing));
 }
 
-bool octoquad_read_i2c_recovery_mode(OctoQuadI2cRecoveryMode* mode)
+bool octoquad_get_i2c_recovery_mode(OctoQuadI2cRecoveryMode* mode)
 {
     uint8_t outgoing[2];
     outgoing[0] = OCTOQUAD_CMD_READ_PARAM;
@@ -371,7 +371,7 @@ bool octoquad_set_channel_bank_mode(OctoQuadChannelBankMode mode)
     return write_registers(OCTOQUAD_REG_COMMAND, outgoing, sizeof(outgoing));
 }
 
-bool octoquad_read_channel_bank_mode(OctoQuadChannelBankMode* mode)
+bool octoquad_get_channel_bank_mode(OctoQuadChannelBankMode* mode)
 {
     uint8_t outgoing[2];
     outgoing[0] = OCTOQUAD_CMD_READ_PARAM;
@@ -398,7 +398,7 @@ bool octoquad_set_channel_pulse_width_params(uint8_t chan, OctoQuadChannelPulseW
     return write_registers(OCTOQUAD_REG_COMMAND, outgoing, sizeof(outgoing));
 }
 
-bool octoquad_read_channel_pulse_width_params(uint8_t chan, OctoQuadChannelPulseWidthParams* out)
+bool octoquad_get_channel_pulse_width_params(uint8_t chan, OctoQuadChannelPulseWidthParams* out)
 {
     if(!ENCODER_IDX_IN_RANGE(chan))
     {
@@ -415,7 +415,7 @@ bool octoquad_read_channel_pulse_width_params(uint8_t chan, OctoQuadChannelPulse
     return read_registers(OCTOQUAD_REG_COMMAND_DAT0,  sizeof(uint16_t)*2, (uint8_t*) out);
 }
 
-bool octoquad_write_params_to_flash()
+bool octoquad_save_params_to_flash()
 {
     bool ret = write_register(OCTOQUAD_REG_COMMAND, OCTOQUAD_CMD_WRITE_PARAMS_TO_FLASH);
     platformImpl.sleep_ms(FLASH_PROGRAM_DELAY_MS);
@@ -447,7 +447,7 @@ bool octoquad_set_all_channel_directions(const bool reverse[8])
     return write_registers(OCTOQUAD_REG_COMMAND, outgoing, sizeof(outgoing));
 }
 
-bool octoquad_read_all_channel_directions(bool reverseOut[8])
+bool octoquad_get_all_channel_directions(bool reverseOut[8])
 {
     uint8_t outgoing[2];
     outgoing[0] = OCTOQUAD_CMD_READ_PARAM;
@@ -510,7 +510,7 @@ bool octoquad_set_single_channel_direction(uint8_t chan, bool reverse)
     }
 }
 
-bool octoquad_read_single_channel_direction(uint8_t chan, bool* reverseOut)
+bool octoquad_get_single_channel_direction(uint8_t chan, bool* reverseOut)
 {
     if(!ENCODER_IDX_IN_RANGE(chan))
     {

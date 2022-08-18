@@ -167,7 +167,7 @@ void setup()
 
     // Check the CHIP_ID
     uint8_t chipId;
-    if(!octoquad_read_chip_id(&chipId)) goto error;
+    if(!octoquad_get_chip_id(&chipId)) goto error;
 
     if(chipId == OCTOQUAD_CHIP_ID)
     {
@@ -183,7 +183,7 @@ void setup()
 
     // Read the firmware version
     OctoQuadFwVersion firmwareVersion;
-    if(!octoquad_read_fw_version(&firmwareVersion)) goto error;
+    if(!octoquad_get_fw_version(&firmwareVersion)) goto error;
 
     // Print to console
     sprintf(strBuf, "OctoQuad Reports FW v%d.%d.%d\r\n", firmwareVersion.maj, firmwareVersion.min, firmwareVersion.eng);
@@ -198,19 +198,19 @@ void setup()
     }
 
     OctoQuadChannelBankMode channelBankMode;
-    if(!octoquad_read_channel_bank_mode(&channelBankMode)) goto error;
+    if(!octoquad_get_channel_bank_mode(&channelBankMode)) goto error;
     sprintf(strBuf, "Channel Bank Mode = %d\r\n", channelBankMode);
     Serial.print(strBuf);
 
     OctoQuadI2cRecoveryMode recoveryMode;
-    if(!octoquad_read_i2c_recovery_mode(&recoveryMode)) goto error;
+    if(!octoquad_get_i2c_recovery_mode(&recoveryMode)) goto error;
     sprintf(strBuf, "I2C Recovery Mode = %d\r\n", recoveryMode);
     Serial.print(strBuf);
 
     for(int i = ENCODER_IDX_MIN; i <= ENCODER_IDX_MAX; i++)
     {
         uint8_t intvl;
-        if(!octoquad_read_velocity_measurement_intvl(i, &intvl)) goto error;
+        if(!octoquad_get_velocity_measurement_intvl(i, &intvl)) goto error;
         sprintf(strBuf, "Channel %d velocity sample interval = %d\r\n", i, intvl);
         Serial.print(strBuf);
     }
@@ -218,13 +218,13 @@ void setup()
     for(int i = ENCODER_IDX_MIN; i <= ENCODER_IDX_MAX; i++)
     {
         OctoQuadChannelPulseWidthParams params;
-        if(!octoquad_read_channel_pulse_width_params(i, &params)) goto error;
+        if(!octoquad_get_channel_pulse_width_params(i, &params)) goto error;
         sprintf(strBuf, "Channel %d pulse min/max = %d/%d\r\n", i, params.min, params.max);
         Serial.print(strBuf);
     }
 
     bool channelDirections[8];
-    octoquad_read_all_channel_directions(channelDirections);
+    octoquad_get_all_channel_directions(channelDirections);
 
     for(int i = ENCODER_IDX_MIN; i <= ENCODER_IDX_MAX; i++)
     {

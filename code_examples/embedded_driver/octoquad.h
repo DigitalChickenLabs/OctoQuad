@@ -115,8 +115,8 @@ typedef struct
 //----------------------------------------------------------------------------------
 
 bool octoquad_init(OctoQuadInterface inft, OctoQuadPlatformImpl platform);
-bool octoquad_read_chip_id(uint8_t* const out);
-bool octoquad_read_fw_version(OctoQuadFwVersion * dst);
+bool octoquad_get_chip_id(uint8_t* const out);
+bool octoquad_get_fw_version(OctoQuadFwVersion * dst);
 
 bool octoquad_read_single_position(uint8_t encoder, int32_t* out);
 bool octoquad_read_single_velocity(uint8_t encoder, int16_t* out);
@@ -131,24 +131,24 @@ bool octoquad_reset_single_position(uint8_t chan);
 bool octoquad_reset_all_positions();
 
 bool octoquad_set_velocity_measurement_intvl(uint8_t chan, uint8_t intvl);
-bool octoquad_read_velocity_measurement_intvl(uint8_t chan, uint8_t* out);
+bool octoquad_get_velocity_measurement_intvl(uint8_t chan, uint8_t* out);
 
 bool octoquad_set_i2c_recovery_mode(OctoQuadI2cRecoveryMode mode);
-bool octoquad_read_i2c_recovery_mode(OctoQuadI2cRecoveryMode* mode);
+bool octoquad_get_i2c_recovery_mode(OctoQuadI2cRecoveryMode* mode);
 
 bool octoquad_set_channel_bank_mode(OctoQuadChannelBankMode mode);
-bool octoquad_read_channel_bank_mode(OctoQuadChannelBankMode* out);
+bool octoquad_get_channel_bank_mode(OctoQuadChannelBankMode* out);
 
 bool octoquad_set_channel_pulse_width_params(uint8_t chan, OctoQuadChannelPulseWidthParams params);
-bool octoquad_read_channel_pulse_width_params(uint8_t chan, OctoQuadChannelPulseWidthParams* out);
+bool octoquad_get_channel_pulse_width_params(uint8_t chan, OctoQuadChannelPulseWidthParams* out);
 
 bool octoquad_set_all_channel_directions(const bool reverse[8]);
-bool octoquad_read_all_channel_directions(bool reverseOut[8]);
+bool octoquad_get_all_channel_directions(bool reverseOut[8]);
 
 bool octoquad_set_single_channel_direction(uint8_t chan, bool reverse);
-bool octoquad_read_single_channel_direction(uint8_t chan, bool* reverseOut);
+bool octoquad_get_single_channel_direction(uint8_t chan, bool* reverseOut);
 
-bool octoquad_write_params_to_flash();
+bool octoquad_save_params_to_flash();
 bool octoquad_reset_everything();
 
 #endif //OCTOQUADPICOLIB_OCTOQUAD_H
