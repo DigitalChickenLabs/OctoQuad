@@ -18,3 +18,4 @@ The OctoQuad can be powered via or USB or via the 3.3v input pin on the board. A
 
 A wide range of sample code is available, including for Arduino, Raspberry Pi, and PC.
 
+# For using the OctoQuad in FIRST Tech Challenge, start [HERE.](https://github.com/DigitalChickenLabs/OctoQuadFtcDriver)
