@@ -1,3 +1,6 @@
+
+# For using the OctoQuad in FIRST Tech Challenge, start [HERE.](https://github.com/DigitalChickenLabs/OctoQuadFtcDriver)
+
 The OctoQuad is an 8-channel quadrature & pulse width decode module. For quadrature signals, position and velocity can be tracked for all 8 channels simultaneously at up to a 250KHz pulse rate (up to 1 million counts/s). For pulse width signals, pulses up to 65535us are supported. The channel inputs and I2C lines are protected from ESD to +/- 15kV (air).
 
 Options for interfacing to OctoQuad are very flexible:
@@ -17,5 +20,3 @@ The OctoQuad is perfect for use cases where there is a need to decode many pulse
 The OctoQuad can be powered via or USB or via the 3.3v input pin on the board. All channel connections and the dedicated I2C connector use a JST-PH connector, while the auxiliary header uses a standard 0.1" pin spacing.
 
 A wide range of sample code is available, including for Arduino, Raspberry Pi, and PC.
-
-# For using the OctoQuad in FIRST Tech Challenge, start [HERE.](https://github.com/DigitalChickenLabs/OctoQuadFtcDriver)
