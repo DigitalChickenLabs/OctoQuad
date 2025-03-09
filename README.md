@@ -1,6 +1,8 @@
-The OctoQuad is an 8-channel quadrature & pulse width decode module. For quadrature signals, position and velocity can be tracked for all 8 channels simultaneously at up to a 250KHz pulse rate (up to 1 million counts/s). For pulse width signals, pulses up to 65535us are supported. The channel inputs and I2C lines are protected from ESD to +/- 15kV (air).
+The OctoQuad is an 8-channel quadrature & pulse width decode module. For quadrature signals, position and velocity can be tracked for all 8 channels simultaneously at up to a 250KHz pulse rate (up to 1 million counts/s). For pulse width signals, pulses up to 65535us are supported. With firmware v3, PWM absolute encoders can be tracked accross multiple revolutions. The FTC Edition MK2 board also has an onboard IMU and absolute localizer algorithm intended for use with deadwheel odometry pods.
 
-Options for interfacing to OctoQuad are very flexible:
+The channel inputs and I2C lines are protected from ESD to +/- 15kV (air).
+
+Options for interfacing to OctoQuad are very flexible (I2C only on FTC Ed.):
 
  - I2C (up to 400KHz bus speed)
 
