@@ -1,11 +1,11 @@
-# Field-Upgradable Firmware
+# Download OctoQuad Firmware.
 
 **WARNING: Flashing unofficial firmware may cause permanent damage to the OctoQuad, or to devices to which it is connected.**
 
 ## 1 Firmware files
 
 From time to time, official firmware updates for the OctoQuad may be released. 
-Official firmware binaries are found here. 
+These Official firmware binaries are found here. 
 
 ## 2 Flashing firmware
 
