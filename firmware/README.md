@@ -24,6 +24,11 @@ To flash a firmware image onto the OctoQuad, follow the procedure below:
 
 ## Release Notes
 
+### v3.1.0
+
+ - Improves IMU stability on FTC Ed MK2
+ - Adds diagnostic parameters for the IMU and MCU uptime
+
 ### v3.0.11
 
  - Improves accuracy of absolute localizer velocity on FTC Ed MK2
